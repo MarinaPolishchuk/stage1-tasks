@@ -144,21 +144,33 @@ function getLocalStorage() {
 window.addEventListener('load', getLocalStorage)
 
 
-const changeQuoteEl = document.querySelector('.change-quote');
+
 const quotes = document.querySelector('.quote');
 const author = document.querySelector('.author');
-const quotesNumber = getRandomNum(1, 51);
+let quotesNumber = getRandomNum(0, 50);
 let quotesData = [];
 
 async function getQuotes() {
   const quotesUrl = 'data.json';
   const res = await fetch(quotesUrl);
   quotesData = await res.json();
-
-  const q = quotesData[quotesNumber];
-
-  quotes.textContent = q.text;
-  author.textContent = q.author;
+  newQuotes();
+  
 }
 getQuotes();
 
+function newQuotes(){
+  const q = quotesData[quotesNumber];
+  quotes.textContent = q.text;
+  author.textContent = q.author;
+}
+
+const changeQuoteEl = document.querySelector('.change-quote');
+changeQuoteEl.addEventListener('click', () => {
+  quotesNumber++;
+
+  if (quotesNumber>50){
+    quotesNumber = 0;
+  }
+  newQuotes();
+})
